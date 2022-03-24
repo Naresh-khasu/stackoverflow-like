@@ -8,6 +8,11 @@ use App\Models\Comment;
 
 class HomeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['only' => ['postComment']]);
+
+    }
     public function home()
     {
         $top_questions = Question::latest('id')->limit(10)->get();
@@ -27,6 +32,7 @@ class HomeController extends Controller
     }
     public function postComment(Request $request)
     {
+
         $comment = Comment::create(
             [
                 'user_id' => auth()->id(),
@@ -34,7 +40,23 @@ class HomeController extends Controller
                 'comment' => $request->comment,
             ]
         );
-        return response()->json(['message'=>'submitted','comment' => $comment]);
+        $question = Question::where('id', $request->question_id)->first();
+        $comments = $question->comments;
+        $view = view('_partials.comment', compact('comments'))->render();
+        return $view;
+    }
+    public function updateComment(Request $request)
+    {
+        $comment = Comment::find($request->comment_id);
 
+        $comment->update(
+            [
+                'comment' => $request->comment,
+            ]
+        );
+        $question = Question::where('id', $request->question_id)->first();
+        $comments = $question->comments;
+        $view = view('_partials.comment', compact('comments'))->render();
+        return $view;
     }
 }

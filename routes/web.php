@@ -22,4 +22,5 @@ Route::resource('question',QuestionController::class);
 Route::get('/', [HomeController::class,'home'])->name('home');
 Route::get('/questions/{id}/{slug}', [HomeController::class,'questionDetail'])->name('questionDetail');
 Route::post('post-comment',[HomeController::class,'postComment'])->name('postComment');
+Route::post('update-comment',[HomeController::class,'updateComment'])->name('updateComment');
 
