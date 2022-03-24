@@ -20,7 +20,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Question</th>
+                                <th>Title</th>
                                 <th>Asked Date</th>
                                 <th>View Count</th>
                                 <th>Action</th>
@@ -38,7 +38,7 @@
                         <tbody>
                             @foreach ($questions as $question)
                                 <tr>
-                                    <td>{!! $question->question !!}</td>
+                                    <td>{!! $question->title !!}</td>
                                     <td>{{ $question->created_at->diffForHumans() }}</td>
                                     <td>{{ $question->view_count }}</td>
                                     <td><a href="{{route('question.edit',$question->id)}}">edit</a></td>

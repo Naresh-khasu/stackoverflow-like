@@ -20,7 +20,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions =$this->question->latest()->get();
+        $questions =$this->question->latest()->where('user_id', auth()->user()->id)->get();
         return view('question.index',compact('questions'));
     }
 
@@ -45,7 +45,9 @@ class QuestionController extends Controller
     public function store(QuestionRequest $request)
     {
         try {
-            $this->question->create($request->validated());
+
+            $question = $this->question->create($request->validated());
+            $this->updateQuestionTag($question, $request);
             $request->session()->flash('success', 'Question created successfully');
             return redirect()->route('question.index');
         } catch (\Throwable $th) {
@@ -87,6 +89,7 @@ class QuestionController extends Controller
     {
         try {
             $question->update($request->validated());
+            $this->updateQuestionTag($question, $request);
             $request->session()->flash('success', 'Question updated successfully');
             return redirect()->route('question.index');
         } catch (\Throwable $th) {
@@ -103,5 +106,10 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         //
+    }
+    protected function updateQuestionTag($question, $request)
+    {
+        $tags = array_filter(explode(',', $request->tags));
+        $question->questionHasTags()->sync($tags);
     }
 }

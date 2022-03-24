@@ -20,6 +20,8 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin.min.css') }}" rel="stylesheet">
 @stack('styles')
+@livewireStyles
+
 </head>
 
 <body id="page-top">

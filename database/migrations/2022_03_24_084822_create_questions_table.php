@@ -15,9 +15,9 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->text('question')->nullable();
+            $table->text('title')->nullable();
+            $table->mediumText('description')->nullable();
             $table->text('slug')->nullable();
-            $table->boolean('active_status')->default(true);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('view_count')->default(0);
             $table->softDeletes();

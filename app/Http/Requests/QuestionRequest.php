@@ -24,8 +24,10 @@ class QuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            'question' => ['required', 'string'],
+            'title' => ['required', 'string'],
             'user_id' => ['required'],
+            'description' => ['nullable'],
+            'slug' => ['required'],
         ];
     }
     protected function prepareForValidation()
@@ -33,6 +35,7 @@ class QuestionRequest extends FormRequest
 
             $this->merge([
                 'user_id' => auth()->id(),
+                'slug' => \Str::slug($this->title)
             ]);
     }
 }
