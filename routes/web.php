@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\FacebookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,7 @@ Route::get('/questions/{id}/{slug}', [HomeController::class,'questionDetail'])->
 Route::post('post-comment',[HomeController::class,'postComment'])->name('postComment');
 Route::post('update-comment',[HomeController::class,'updateComment'])->name('updateComment');
 
+Route::prefix('facebook')->name('facebook.')->group( function(){
+    Route::get('auth', [FaceBookController::class, 'loginUsingFacebook'])->name('login');
+    Route::get('callback', [FacebookController::class, 'callbackFromFacebook'])->name('callback');
+});
