@@ -32,7 +32,7 @@ return [
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'), //USE FROM FACEBOOK DEVELOPER ACCOUNT
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'), //USE FROM FACEBOOK DEVELOPER ACCOUNT
-        'redirect' => 'http://localhost:8000/facebook/callback/'
+        'redirect' => env('FACEBOOK_CALLBACK'),
     ],
 
 ];

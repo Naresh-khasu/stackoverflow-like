@@ -24,6 +24,7 @@ Route::get('/', [HomeController::class,'home'])->name('home');
 Route::get('/questions/{id}/{slug}', [HomeController::class,'questionDetail'])->name('questionDetail');
 Route::post('post-comment',[HomeController::class,'postComment'])->name('postComment');
 Route::post('update-comment',[HomeController::class,'updateComment'])->name('updateComment');
+Route::post('upvote',[HomeController::class,'upvote'])->name('upvote');
 
 Route::prefix('facebook')->name('facebook.')->group( function(){
     Route::get('auth', [FaceBookController::class, 'loginUsingFacebook'])->name('login');
