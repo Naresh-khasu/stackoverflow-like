@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Comment;
 use App\Models\Upvote;
+use App\Models\CommentHistory;
 use App\Traits\SharedTrait;
 
 class HomeController extends Controller
@@ -35,26 +36,26 @@ class HomeController extends Controller
     }
     public function postComment(Request $request)
     {
-        Comment::create(
+        $comment = Comment::create(
             [
                 'user_id' => auth()->id(),
                 'question_id' => $request->question_id,
                 'comment' => $request->comment,
             ]
         );
+        $this->createCommentHistory($comment);
         $this->updateCommentAchievement();
         return $this->getComments($request->question_id);
     }
     public function updateComment(Request $request)
     {
         $comment = Comment::find($request->comment_id);
-
         $comment->update(
             [
                 'comment' => $request->comment,
             ]
         );
-
+        $this->createCommentHistory($comment);
         return $this->getComments($request->question_id);
     }
     public function upvote(Request $request)
@@ -78,5 +79,12 @@ class HomeController extends Controller
         $comments = $question->comments;
         $view = view('_partials.comment', compact('comments'))->render();
         return $view;
+    }
+    protected function createCommentHistory($comment){
+        CommentHistory::create(
+            [
+                'comment_id' => $comment->id,
+                'comment' => $comment->comment,
+            ]);
     }
 }

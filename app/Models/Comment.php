@@ -13,4 +13,8 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'user_id')->withDefault();
     }
+    public function commentHistory()
+    {
+        return $this->hasMany(CommentHistory::class);
+    }
 }
