@@ -9,9 +9,10 @@
                 </span>
                 <div>
                     @auth
-                                    <a href="" onclick="event.preventDefault(); upvote({{$comment->id}})"><i class="fas fa-arrow-up" ></i></a>
-                                    @endauth
-                                    <span class="badge badge-info">{{$comment->up_vote}} <em>upvotes</em></span>
+                        <a href="" onclick="event.preventDefault(); upvote({{ $comment->id }})"><i
+                                class="fas fa-arrow-up"></i></a>
+                    @endauth
+                    <span class="badge badge-info">{{ $comment->up_vote }} <em>upvotes</em></span>
 
                     <span>{!! $comment->comment !!}</span>
                     @auth
@@ -25,9 +26,15 @@
 
             </div>
             <form action="#" method="post" id="edit-form-{{ $comment->id }}" style="display: none;">
+                @foreach ($comment->commentHistory as $history)
+                    <div>
+                        <span class="badge badge-info">{{ $history->created_at->diffForHumans() }}</span><br>
+                        <span>{!! $history->comment !!}</span>
+                    </div>
+                @endforeach
                 <div class="img-push">
                     <label for="comment"> Edit Your Answer</label>
-                    <textarea name="description" cols="30"class="form-control form-control-user"
+                    <textarea name="description" cols="30" class="form-control form-control-user"
                         id="edit-comment-{{ $comment->id }}"></textarea>
                     <button class="btn btn-primary mt-2" id="editComment-{{ $comment->id }}"
                         onclick="event.preventDefault(); updateComment({{ $comment->id }})">Update Comment</button>
@@ -40,4 +47,3 @@
 
 
 </div>
-

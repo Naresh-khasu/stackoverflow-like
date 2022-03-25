@@ -41,26 +41,38 @@
                                 </span>
                                 <div>
                                     @auth
-                                    <a href="" onclick="event.preventDefault(); upvote({{$comment->id}})"><i class="fas fa-arrow-up" ></i></a>
+                                        <a href="" onclick="event.preventDefault(); upvote({{ $comment->id }})"><i
+                                                class="fas fa-arrow-up"></i></a>
                                     @endauth
-                                    <span class="badge badge-info">{{$comment->up_vote}} <em>upvotes</em></span>
+                                    <span class="badge badge-info">{{ $comment->up_vote }} <em>upvotes</em></span>
 
                                     <span>{!! $comment->comment !!}</span>
                                     @auth
                                         @if (\Auth::id() == $comment->user_id)
-                                            <span class="text-muted float-right"><a href="" onclick="event.preventDefault(); editForm({{$comment->id}})"> Edit
+                                            <span class="text-muted float-right"><a href=""
+                                                    onclick="event.preventDefault(); editForm({{ $comment->id }})"> Edit
                                                     Comment</a></span>
                                         @endif
                                     @endauth
                                 </div>
 
                             </div>
-                            <form action="#" method="post" id="edit-form-{{$comment->id}}" style="display: none;">
+                            <form action="#" method="post" id="edit-form-{{ $comment->id }}" style="display: none;">
+                                <h5>Comment History</h5>
+                                @foreach ($comment->commentHistory as $history)
+                                    <div>
+                                            <span  class="badge badge-info">{{ $history->created_at->diffForHumans() }}</span><br>
+                                            <span>{!! $history->comment !!}</span>
+                                    </div>
+                                @endforeach
+
                                 <div class="img-push">
                                     <label for="comment"> Edit Your Answer</label>
                                     <textarea name="description" cols="30" class="form-control form-control-user"
-                                        id="edit-comment-{{$comment->id}}" ></textarea>
-                                    <button class="btn btn-primary mt-2" id="editComment-{{$comment->id}}" onclick="event.preventDefault(); updateComment({{$comment->id}})">Update Comment</button>
+                                        id="edit-comment-{{ $comment->id }}"></textarea>
+                                    <button class="btn btn-primary mt-2" id="editComment-{{ $comment->id }}"
+                                        onclick="event.preventDefault(); updateComment({{ $comment->id }})">Update
+                                        Comment</button>
                                 </div>
                             </form>
 
@@ -91,7 +103,6 @@
     </div>
 @endsection
 @push('scripts')
-
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -121,8 +132,8 @@
     </script>
     <script>
         function editForm(id) {
-            console.log("edit-form-"+id);
-            var x = document.getElementById("edit-form-"+id);
+            console.log("edit-form-" + id);
+            var x = document.getElementById("edit-form-" + id);
 
             if (x.style.display === "none") {
                 x.style.display = "block";
@@ -132,47 +143,47 @@
         }
     </script>
     <script>
-         function updateComment(id) {
-             console.log(id);
-                comment = $('textarea#edit-comment-'+id).val();
-                console.log(comment);
-                question_id = "{{ $question->id }}";
-                if (!comment) {
-                    toastr.error('Comment cannot be empty')
-                    return null;
-                }
-                axios.post("{{ route('updateComment') }}", {
-                        'comment': comment,
-                        'question_id': question_id,
-                        'comment_id': id,
-                        _token: "{{ csrf_token() }}",
-                    })
-                    .then(function(response) {
+        function updateComment(id) {
+            console.log(id);
+            comment = $('textarea#edit-comment-' + id).val();
+            console.log(comment);
+            question_id = "{{ $question->id }}";
+            if (!comment) {
+                toastr.error('Comment cannot be empty')
+                return null;
+            }
+            axios.post("{{ route('updateComment') }}", {
+                    'comment': comment,
+                    'question_id': question_id,
+                    'comment_id': id,
+                    _token: "{{ csrf_token() }}",
+                })
+                .then(function(response) {
 
-                        $('#edit-form'+id).trigger("reset");
-                        $('#commentlist').html(response.data);
-                    })
-                    .catch(function(error) {
-                        console.log(error.message);
-                    });
+                    $('#edit-form' + id).trigger("reset");
+                    $('#commentlist').html(response.data);
+                })
+                .catch(function(error) {
+                    console.log(error.message);
+                });
         };
     </script>
-     <script>
+    <script>
         function upvote(id) {
             console.log(id);
 
-               axios.post("{{ route('upvote') }}", {
-                       'comment_id': id,
-                       'question_id': "{{ $question->id }}",
-                       _token: "{{ csrf_token() }}",
-                   })
-                   .then(function(response) {
+            axios.post("{{ route('upvote') }}", {
+                    'comment_id': id,
+                    'question_id': "{{ $question->id }}",
+                    _token: "{{ csrf_token() }}",
+                })
+                .then(function(response) {
 
-                       $('#commentlist').html(response.data);
-                   })
-                   .catch(function(error) {
-                       console.log(error.message);
-                   });
-       };
-   </script>
+                    $('#commentlist').html(response.data);
+                })
+                .catch(function(error) {
+                    console.log(error.message);
+                });
+        };
+    </script>
 @endpush

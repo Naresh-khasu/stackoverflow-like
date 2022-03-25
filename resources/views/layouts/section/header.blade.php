@@ -31,9 +31,6 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        @include('layouts.section.sidebar')
-
-
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 

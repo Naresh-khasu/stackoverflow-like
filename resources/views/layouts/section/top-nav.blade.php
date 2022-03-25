@@ -44,7 +44,32 @@
                  </form>
              </div>
          </li>
+         <li class="nav-item dropdown no-arrow">
+            <a class="nav-link" href="{{route('home')}}">
+                <span class="mr-2 d-lg-inline text-gray-600 small">Home</span>
+            </a>
 
+        </li>
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link" href="{{route('question.create')}}">
+                <span class="mr-2 d-lg-inline text-gray-600 small">Ask a question</span>
+            </a>
+
+        </li>
+        @auth
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link" href="{{route('question.index')}}">
+                <span class="mr-2 d-lg-inline text-gray-600 small">My Questions</span>
+            </a>
+
+        </li>
+        <li class="nav-item dropdown no-arrow">
+            <a class="nav-link" href="{{route('getAcheivement')}}">
+                <span class="mr-2 d-lg-inline text-gray-600 small">Achievements</span>
+            </a>
+
+        </li>
+        @endauth
 
 
 

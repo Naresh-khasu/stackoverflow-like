@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\FacebookController;
+use App\Http\Controllers\Backend\AcheivementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ use App\Http\Controllers\Auth\FacebookController;
 
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('achivements',[AcheivementController::class,'getAcheivement'])->name('getAcheivement');
 Route::resource('question',QuestionController::class);
 });
 Route::get('/', [HomeController::class,'home'])->name('home');
