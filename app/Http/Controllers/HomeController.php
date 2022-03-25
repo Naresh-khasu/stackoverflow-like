@@ -19,9 +19,28 @@ class HomeController extends Controller
     public function home()
     {
 
-        $top_questions = Question::latest('id')->limit(10)->get();
+        $top_questions = Question::latest('id')
+        ->limit(10)
+        ->get();
         $data = [
             'top_questions' => $top_questions,
+            'heading' => 'Top Questions'
+        ];
+        return view('index', $data);
+    }
+    public function search(Request $request)
+    {
+
+        $top_questions = Question::latest('id')
+        ->when($request->search, function ($qr) use ($request) {
+                return $qr->where('title','LIKE', '%'.$request->search.'%');
+            })
+        ->limit(10)
+        ->get();
+        $data = [
+            'top_questions' => $top_questions,
+            'heading' => 'Search Results'
+
         ];
         return view('index', $data);
     }
